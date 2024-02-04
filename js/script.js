@@ -16,6 +16,7 @@ let editId      = '';
 // Submit the form 
 form.addEventListener('submit', addItem );
 clearBtn.addEventListener('click', clearItems );
+window.addEventListener('DOMContentLoaded', setupItems );
 
 // =========== Functions =================
 function addItem(e){
@@ -25,28 +26,7 @@ function addItem(e){
     
     if ( value ) {
         if ( !editFlag ) {
-            const element = document.createElement('article');
-            // Add class to the element
-            element.classList.add('gb-item');
-
-            const attr = document.createAttribute('data-id');
-            attr.value = id;
-
-            element.setAttributeNode(attr);
-            element.innerHTML = `
-            <p class="gb-item-title">${value}</p>
-            <div class="gb-btn-container">
-                <button class="gb-edit-btn"><i class="fas fa-pen"></i></button>
-                <button class="gb-delete-btn"><i class="fas fa-trash"></i></button>
-            </div>`;
-
-            const editBtn   = element.querySelector('.gb-edit-btn');
-            const deleteBtn = element.querySelector('.gb-delete-btn');
-
-            editBtn.addEventListener('click', editItem );
-            deleteBtn.addEventListener('click', deleteItem )
-
-            contents.appendChild(element);
+            createListItem(id, value);
             displayAlert('item added to the list', 'success');
             groceryLists.classList.add('gb-show');
 
@@ -162,4 +142,42 @@ function editFromLocalStorage(id, value) {
         return item;
     });
     localStorage.setItem('list', JSON.stringify(items));
+}
+
+// Set up all items =============
+function setupItems() {
+    let items = getLocalStorage();
+    if (items.length > 0 ) {
+        items.forEach(function(item){
+            createListItem(item.id, item.value)
+        });
+        groceryLists.classList.add('gb-show');
+    }
+}
+
+// Create list item 
+function createListItem(id, value) {
+    
+    const element = document.createElement('article');
+    // Add class to the element
+    element.classList.add('gb-item');
+
+    const attr = document.createAttribute('data-id');
+    attr.value = id;
+
+    element.setAttributeNode(attr);
+    element.innerHTML = `
+    <p class="gb-item-title">${value}</p>
+    <div class="gb-btn-container">
+        <button class="gb-edit-btn"><i class="fas fa-pen"></i></button>
+        <button class="gb-delete-btn"><i class="fas fa-trash"></i></button>
+    </div>`;
+
+    const editBtn   = element.querySelector('.gb-edit-btn');
+    const deleteBtn = element.querySelector('.gb-delete-btn');
+
+    editBtn.addEventListener('click', editItem );
+    deleteBtn.addEventListener('click', deleteItem )
+
+    contents.appendChild(element);
 }
