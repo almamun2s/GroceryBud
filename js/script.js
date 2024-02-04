@@ -43,8 +43,6 @@ function addItem(e){
             const editBtn   = element.querySelector('.gb-edit-btn');
             const deleteBtn = element.querySelector('.gb-delete-btn');
 
-            // console.log(editBtn);
-            // console.log(deleteBtn);
             editBtn.addEventListener('click', editItem );
             deleteBtn.addEventListener('click', deleteItem )
 
@@ -57,7 +55,9 @@ function addItem(e){
             // Set to default 
             setToDefault();
         }else{
-            console.log("editing item");
+            editElement.innerHTML = value;
+            displayAlert('item edited', 'success');
+            setToDefault();
         }
     }else{
         displayAlert('please enter something', 'danger');
@@ -91,7 +91,6 @@ function setToDefault() {
 
 // Clear items function
 function clearItems() {
-    // console.log('hello');
     groceryLists.classList.remove('gb-show');
     displayAlert('all items removed', 'success');
     setToDefault();
@@ -105,16 +104,25 @@ function clearItems() {
 }
 
 // editItem function
-function editItem() {
-    console.log('editing');
+function editItem(e) {
+    const element   = e.currentTarget.parentElement.parentElement;
+    editElement     = e.currentTarget.parentElement.previousElementSibling;
+
+    // set Form value 
+    grocery.value   = editElement.innerHTML;
+    submitBtn.value = "Edit";
+    editFlag        = true;
+    editId          = element.dataset.id;
+
 }
 // deleteItem function
 function deleteItem(e) {
     const element = e.currentTarget.parentElement.parentElement;
     contents.removeChild(element);
+    displayAlert('item removed', 'danger');
+    setToDefault();
 
     if (contents.children.length === 0) {
         groceryLists.classList.remove('gb-show');
     }
-    displayAlert('item removed', 'danger');
 }
