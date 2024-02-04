@@ -18,5 +18,28 @@ form.addEventListener('submit', addItem );
 // =========== Functions =================
 function addItem(e){
     e.preventDefault();
-    console.log(grocery.value);
+    const value = grocery.value;
+    const id    = new Date().getTime().toString();
+    
+    if ( value ) {
+        if ( !editFlag ) {
+            console.log("adding item");
+        }else{
+            console.log("editing item");
+        }
+    }else{
+        // console.log("empty value");
+        displayAlert('please enter something', 'danger');
+    }
+}
+
+function displayAlert(text, action) {
+    alert.innerText = text;
+    alert.classList.add(`gb-${action}`);
+
+    // remove alert
+    setTimeout(() => {
+        alert.classList.remove(`gb-${action}`);
+        alert.innerText = '';
+    }, 1500);
 }

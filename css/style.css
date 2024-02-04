@@ -40,15 +40,22 @@
 .gb-alert{
     text-align: center;
     padding: 0.5rem 0;
-    display: none;
+    visibility: hidden;
+    opacity: 0;
+    text-transform: capitalize;
+    transition: var(--transition);
 }
 .gb-success{
     color: #155724;
     background: #d4edda;
+    visibility: visible;
+    opacity: 1;
 }
 .gb-danger{
     color: #721c24;
     background: #f8d7da;
+    visibility: visible;
+    opacity: 1;
 }
 
 /* Form Control */
