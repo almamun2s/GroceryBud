@@ -4,6 +4,7 @@ const form          = document.querySelector('.gb-form');
 const grocery       = document.getElementById('grocery');
 const submitBtn     = document.querySelector('.submit-btn');
 const groceryLists  = document.querySelector('.gb-lists');
+const contents      = document.querySelector('.gb-grocery-contents');
 const clearBtn      = document.querySelector('.gb-clear-btn'); 
 
 // ======== Edit options ===========
@@ -23,12 +24,29 @@ function addItem(e){
     
     if ( value ) {
         if ( !editFlag ) {
-            console.log("adding item");
+            // console.log("adding item");
+            const element = document.createElement('article');
+            // Add class to the element
+            element.classList.add('gb-item');
+
+            const attr = document.createAttribute('data-id');
+            attr.value = id;
+
+            element.setAttributeNode(attr);
+            element.innerHTML = `
+            <p class="gb-item-title">${value}</p>
+            <div class="gb-btn-container">
+                <button class="gb-edit-btn"><i class="fas fa-pen"></i></button>
+                <button class="gb-delete-btn"><i class="fas fa-trash"></i></button>
+            </div>`;
+
+            contents.appendChild(element);
+            displayAlert('item added to the list', 'success');
+            groceryLists.classList.add('gb-show');
         }else{
             console.log("editing item");
         }
     }else{
-        // console.log("empty value");
         displayAlert('please enter something', 'danger');
     }
 }
