@@ -40,6 +40,14 @@ function addItem(e){
                 <button class="gb-delete-btn"><i class="fas fa-trash"></i></button>
             </div>`;
 
+            const editBtn   = element.querySelector('.gb-edit-btn');
+            const deleteBtn = element.querySelector('.gb-delete-btn');
+
+            // console.log(editBtn);
+            // console.log(deleteBtn);
+            editBtn.addEventListener('click', editItem );
+            deleteBtn.addEventListener('click', deleteItem )
+
             contents.appendChild(element);
             displayAlert('item added to the list', 'success');
             groceryLists.classList.add('gb-show');
@@ -85,7 +93,8 @@ function setToDefault() {
 function clearItems() {
     // console.log('hello');
     groceryLists.classList.remove('gb-show');
-    displayAlert('items removed', 'success');
+    displayAlert('all items removed', 'success');
+    setToDefault();
 
     const items = document.querySelectorAll('.gb-item');
     if (items.length > 0) {
@@ -93,4 +102,19 @@ function clearItems() {
             contents.removeChild(item);
         })
     }
+}
+
+// editItem function
+function editItem() {
+    console.log('editing');
+}
+// deleteItem function
+function deleteItem(e) {
+    const element = e.currentTarget.parentElement.parentElement;
+    contents.removeChild(element);
+
+    if (contents.children.length === 0) {
+        groceryLists.classList.remove('gb-show');
+    }
+    displayAlert('item removed', 'danger');
 }
