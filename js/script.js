@@ -15,6 +15,7 @@ let editId      = '';
 
 // Submit the form 
 form.addEventListener('submit', addItem );
+clearBtn.addEventListener('click', clearItems );
 
 // =========== Functions =================
 function addItem(e){
@@ -24,7 +25,6 @@ function addItem(e){
     
     if ( value ) {
         if ( !editFlag ) {
-            // console.log("adding item");
             const element = document.createElement('article');
             // Add class to the element
             element.classList.add('gb-item');
@@ -43,6 +43,11 @@ function addItem(e){
             contents.appendChild(element);
             displayAlert('item added to the list', 'success');
             groceryLists.classList.add('gb-show');
+
+            // Add to local storage 
+            addToLocalStorage();
+            // Set to default 
+            setToDefault();
         }else{
             console.log("editing item");
         }
@@ -51,6 +56,7 @@ function addItem(e){
     }
 }
 
+// Display alert function 
 function displayAlert(text, action) {
     alert.innerText = text;
     alert.classList.add(`gb-${action}`);
@@ -60,4 +66,31 @@ function displayAlert(text, action) {
         alert.classList.remove(`gb-${action}`);
         alert.innerText = '';
     }, 1500);
+}
+
+// Add to local storage function
+function addToLocalStorage(id, value) {
+    console.log('added to local storage');
+}
+
+// set to default funciton 
+function setToDefault() {
+    grocery.value   = '';
+    editFlag        = false;
+    editId          = '';
+    submitBtn.value = 'Add';
+}
+
+// Clear items function
+function clearItems() {
+    // console.log('hello');
+    groceryLists.classList.remove('gb-show');
+    displayAlert('items removed', 'success');
+
+    const items = document.querySelectorAll('.gb-item');
+    if (items.length > 0) {
+        items.forEach(function(item) {
+            contents.removeChild(item);
+        })
+    }
 }
