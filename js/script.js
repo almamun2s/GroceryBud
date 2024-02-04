@@ -51,7 +51,7 @@ function addItem(e){
             groceryLists.classList.add('gb-show');
 
             // Add to local storage 
-            addToLocalStorage();
+            addToLocalStorage(id, value);
             // Set to default 
             setToDefault();
         }else{
@@ -74,11 +74,6 @@ function displayAlert(text, action) {
         alert.classList.remove(`gb-${action}`);
         alert.innerText = '';
     }, 1500);
-}
-
-// Add to local storage function
-function addToLocalStorage(id, value) {
-    console.log('added to local storage');
 }
 
 // set to default funciton 
@@ -118,11 +113,39 @@ function editItem(e) {
 // deleteItem function
 function deleteItem(e) {
     const element = e.currentTarget.parentElement.parentElement;
+    const id    = element.dataset.id;
     contents.removeChild(element);
     displayAlert('item removed', 'danger');
     setToDefault();
 
+    deleteFromLocalStorage(id);
+
     if (contents.children.length === 0) {
         groceryLists.classList.remove('gb-show');
     }
+}
+
+// Add to local storage function
+function addToLocalStorage(id, value) {
+    const groceryItem = {id, value};
+    let items = getLocalStorage();
+    // console.log(items);
+    items.push(groceryItem);
+    localStorage.setItem('list', JSON.stringify(items));
+}
+
+// Get from local storage 
+function getLocalStorage() {
+    return localStorage.getItem('list')? JSON.parse(localStorage.getItem('list')) : [];
+}
+
+// Delete from local storage function
+function deleteFromLocalStorage(id) {
+    let items = getLocalStorage();
+    items = items.filter(function(item){
+        if(id !== item.id){
+            return item;
+        }
+    });
+    localStorage.setItem('list', JSON.stringify(items));
 }
