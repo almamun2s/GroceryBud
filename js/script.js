@@ -56,8 +56,9 @@ function addItem(e){
             setToDefault();
         }else{
             editElement.innerHTML = value;
-            displayAlert('item edited', 'success');
+            editFromLocalStorage(editId, value);
             setToDefault();
+            displayAlert('item edited', 'success');
         }
     }else{
         displayAlert('please enter something', 'danger');
@@ -89,6 +90,7 @@ function clearItems() {
     groceryLists.classList.remove('gb-show');
     displayAlert('all items removed', 'success');
     setToDefault();
+    localStorage.removeItem('list');
 
     const items = document.querySelectorAll('.gb-item');
     if (items.length > 0) {
@@ -146,6 +148,18 @@ function deleteFromLocalStorage(id) {
         if(id !== item.id){
             return item;
         }
+    });
+    localStorage.setItem('list', JSON.stringify(items));
+}
+
+// Edit from local storage function
+function editFromLocalStorage(id, value) {
+    let items = getLocalStorage();
+    items = items.map(function(item){
+        if (item.id === id) {
+            item.value = value;
+        }
+        return item;
     });
     localStorage.setItem('list', JSON.stringify(items));
 }
